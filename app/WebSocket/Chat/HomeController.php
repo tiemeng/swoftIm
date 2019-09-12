@@ -16,13 +16,14 @@ use function server;
 
 /**
  * Class HomeController
- *
+ * websoket处理类
  * @WsController()
  */
 class HomeController
 {
 
     /**
+     * 添加好友
      * @MessageMapping("addFriend")
      * @param string $data
      * @throws \Exception
@@ -81,6 +82,7 @@ class HomeController
     }
 
     /**
+     * 好友申请拒绝
      * @param string $data
      * @MessageMapping("refuseFriend")
      * @throws \Exception
@@ -161,6 +163,7 @@ class HomeController
 
 
     /**
+     * 加入群组
      * @MessageMapping("joinGroup")
      * @param $data
      * @throws \Exception
@@ -200,6 +203,7 @@ class HomeController
     }
 
     /**
+     * 消息列表
      * @MessageMapping("message")
      * @param $data
      * @throws \Exception

@@ -25,14 +25,15 @@ class Friends extends Migration
     public function up(): void
     {
         $sql = <<<sql
-CREATE TABLE chat_friends (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	uid INT UNSIGNED NOT NULL DEFAULT 0 COMMENT "用户ID",
-	fuid INT UNSIGNED NOT NULL DEFAULT 0 COMMENT "好友ID",
-	gid INT UNSIGNED NOT NULL DEFAULT 0 COMMENT "分组ID",
-	alais VARCHAR ( 20 ) NOT NULL DEFAULT '' COMMENT '别名',
-	created_at TIMESTAMP NOT NULL DEFAULT '2019-12-12 12:12:12' COMMENT '创建时间' 
-) COMMENT '好友关系表';
+CREATE TABLE `chat_friends` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户ID',
+  `fuid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '好友ID',
+  `gid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '分组ID',
+  `alais` varchar(20) NOT NULL DEFAULT '' COMMENT '别名',
+  `created_at` timestamp NOT NULL DEFAULT '2019-12-12 12:12:12' COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='好友关系表';
 sql;
         $this->execute($sql);
     }

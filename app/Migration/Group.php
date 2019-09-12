@@ -25,13 +25,14 @@ class Group extends Migration
     public function up(): void
     {
         $sql = <<<sql
-CREATE TABLE chat_group ( 
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, 
-	gid INT UNSIGNED NOT NULL DEFAULT 0 COMMENT "分组ID",
-	uid INT UNSIGNED NOT NULL DEFAULT 0 COMMENT "用户ID",
-	is_admin SMALLINT UNSIGNED NOT NULL DEFAULT 1 COMMENT '是否为管理员 1：不是 2：是',
-	created_at TIMESTAMP NOT NULL DEFAULT '2019-12-12 12:12:12' COMMENT '创建时间'
-)comment "用户群";
+CREATE TABLE `chat_group` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `gid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '分组ID',
+  `uid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户ID',
+  `is_admin` smallint(5) unsigned NOT NULL DEFAULT '1' COMMENT '是否为管理员 1：不是 2：是',
+  `created_at` timestamp NOT NULL DEFAULT '2019-12-12 12:12:12' COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户群';
 sql;
         $this->execute($sql);
     }

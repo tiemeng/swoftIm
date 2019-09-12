@@ -25,14 +25,15 @@ class UserGroup extends Migration
     public function up(): void
     {
         $sql = <<<sql
-CREATE TABLE chat_user_group (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	name VARCHAR ( 10 ) NOT NULL DEFAULT '' COMMENT '组名',
-	uid INT UNSIGNED NOT NULL DEFAULT 0 COMMENT "用户ID",
-	avatar VARCHAR ( 200 ) NOT NULL DEFAULT '' COMMENT "头像",
-	type SMALLINT UNSIGNED not null DEFAULT 1 COMMENT "群组类型 1：个人 2：群组",
-	created_at TIMESTAMP NOT NULL DEFAULT '2019-12-12 12:12:12' COMMENT '创建时间'
-) COMMENT '用户分组';
+CREATE TABLE `chat_user_group` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(10) NOT NULL DEFAULT '' COMMENT '组名',
+  `uid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户ID',
+  `type` smallint(5) unsigned NOT NULL DEFAULT '1' COMMENT '群组类型 1：个人 2：群组',
+  `created_at` timestamp NOT NULL DEFAULT '2019-12-12 12:12:12' COMMENT '创建时间',
+  `avatar` varchar(200) NOT NULL DEFAULT '' COMMENT '头像',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户分组';
 sql;
         $this->execute($sql);
     }
