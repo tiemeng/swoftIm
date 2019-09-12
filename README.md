@@ -1,8 +1,8 @@
-#该聊天系统主要基于swoft+layim实现
+该聊天系统主要基于swoft+layim实现
 
 ``由于layim版权问题，只用于开发测试，勿用于商业``
 
-#使用方法
+使用方法
 
 ```
 1、https://github.com/tiemeng/swoftIm.git
@@ -35,6 +35,6 @@
 8、通过配置的域名访问 io.yourhost.com，使用初始化账号密码登录即可
 默认用户：admin 密码：123456
 ```
+其他
 
-#其他
 ``增加了通过sami包来生成接口文档管理，相关配置详见项目根目录下的config.php``
