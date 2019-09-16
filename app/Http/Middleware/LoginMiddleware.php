@@ -26,12 +26,10 @@ class LoginMiddleware implements MiddlewareInterface
 {
 
     /**
-     * Process an incoming server request.
-     *
      * @param ServerRequestInterface $request
      * @param RequestHandlerInterface $handler
-     *
      * @return ResponseInterface
+     * @throws \Swoft\Exception\SwoftException
      * @inheritdoc
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
