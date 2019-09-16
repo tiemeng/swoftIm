@@ -41,8 +41,8 @@ class UserController
     public function logout(Request $request)
     {
 
-        $mine = UserLogic::getInfo($request->input('token'));
-        if (UserLogic::logout($mine['id'])) {
+        $id = $request->userInfo['id'];
+        if (UserLogic::logout($id)) {
             return Common::reJson();
         }
         return Common::reJson(202, '退出失败');
@@ -61,8 +61,7 @@ class UserController
     public function getList(Request $request)
     {
 
-        $mine = UserLogic::getInfo($request->get('token'));
-        $mine['username'] = $mine['nickname'];
+        $mine = $request->userInfo;
         $group = GroupLogic::getUserGroup($mine['id']);
         $friend = FriendLogic::getGroupUser($mine['id']);
         $data = compact('mine', 'friend', 'group');
@@ -82,7 +81,7 @@ class UserController
     public function getGroupUserList(Request $request)
     {
 
-        $mine = UserLogic::getInfo($request->get('token'));
+        $mine = $request->userInfo;
         $gid = intval($request->get('id'));
         if ($gid <= 0) {
             return Common::reJson(-1, '参数错误');
@@ -134,7 +133,7 @@ class UserController
             $type = intval($request->get('type')) ?? 1;
             return view('find/create_group', ['type' => $type]);
         }
-        $mine = UserLogic::getInfo($request->get('token'));
+        $uid = $request->userInfo['id'];
         $name = trim($request->input('name')) ?? '';
         $type = intval($request->get('type')) ?? 1;
         $avatar = !empty($request->input('avatar')) ? $request->input('avatar') : 'http://tp2.sinaimg.cn/2211874245/180/40050524279/0';
@@ -142,7 +141,7 @@ class UserController
             'name' => $name,
             'avatar' => $avatar,
             'type' => $type,
-            'uid' => $mine['id']
+            'uid' => $uid
         ];
 
         if ($id = UserGroupLogic::create($insertData)) {
@@ -182,9 +181,8 @@ class UserController
     {
 
         $gid = intval($request->input('gid'));
-        $userInfo = UserLogic::getInfo($request->get('token'));
-        $uid = $userInfo['id'];
-        if (GroupLogic::isMember($gid, $userInfo['id'])) {
+        $uid = $request->userInfo['id'];
+        if (GroupLogic::isMember($gid, $uid)) {
             return Common::reJson(201, '别闹，你已经是群成员了');
         }
         $data = [
@@ -211,8 +209,8 @@ class UserController
     public function message(Request $request)
     {
 
-        $userInfo = UserLogic::getInfo($request->get('token'));
-        $where = ['uid' => $userInfo['id']];
+        $uid = $request->userInfo['id'];
+        $where = ['uid' => $uid];
         $list = SystemMessageLogic::getList($where);
         return view('home/message_box', ['list' => $list]);
 
@@ -230,26 +228,26 @@ class UserController
     public function addFriend(Request $request)
     {
 
-        $userInfo = UserLogic::getInfo($request->get('token'));
+        $uid = $request->userInfo['id'];
         $id = intval($request->input('id'));
         $gid = intval($request->input('gid'));
         $msgInfo = SystemMessageLogic::getInfoById($id);
         if (empty($msgInfo)) {
             return Common::reJson(201, '该申请记录不存在');
         }
-        if (FriendLogic::isFriend($userInfo['id'], $msgInfo['fromId'])) {
+        if (FriendLogic::isFriend($uid, $msgInfo['fromId'])) {
             return Common::reJson(201, '该申请已处理');
         }
-        $data = ['uid' => $userInfo['id'], 'fuid' => $msgInfo['fromId'], 'gid' => $gid];
+        $data = ['uid' => $uid, 'fuid' => $msgInfo['fromId'], 'gid' => $gid];
         if (FriendLogic::addFriend($data)) {
             $fuserInfo = UserLogic::getInfoById($msgInfo['fromId']);
             !FriendLogic::addFriend([
                 'uid' => $msgInfo['fromId'],
-                'fuid' => $userInfo['id'],
+                'fuid' => $uid,
                 'gid' => $msgInfo['gid']
             ]) && FriendLogic::addFriend([
                 'uid' => $msgInfo['fromId'],
-                'fuid' => $userInfo['id'],
+                'fuid' => $uid,
                 'gid' => $msgInfo['gid']
             ]);
             $reData = [
@@ -293,9 +291,8 @@ class UserController
             return Common::reJson(201, '该记录不存在');
         }
         if (SystemMessageLogic::updateData($where, $updateValue)) {
-            $userInfo = UserLogic::getInfo($request->get('token'));
             $data = [
-                'from_id' => $userInfo['id'],
+                'from_id' => $request->userInfo['id'],
                 'type' => 1,
                 'uid' => $info['fromId'],
                 'created_at' => date('Y-m-d H:i:s')
@@ -315,8 +312,8 @@ class UserController
      */
     public function setRead(Request $request)
     {
-        $userInfo = UserLogic::getInfo($request->get('token'));
-        SystemMessageLogic::updateData(['uid' => $userInfo['id']], ['read' => 1]);
+        $uid = $request->userInfo['id'];
+        SystemMessageLogic::updateData(['uid' => $uid], ['read' => 1]);
     }
 
 

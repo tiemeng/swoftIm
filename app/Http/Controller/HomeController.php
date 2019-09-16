@@ -51,8 +51,8 @@ class HomeController
      */
     public function index(Request $request)
     {
-        $mine = UserLogic::getInfo($request->get('token'));
-        $count = SystemMessageLogic::getUnReadCount($mine['id']);
+        $uid = $request->userInfo['id'];
+        $count = SystemMessageLogic::getUnReadCount($uid);
         return view('home/index', ['count' => $count]);
     }
 

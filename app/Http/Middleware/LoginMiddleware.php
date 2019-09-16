@@ -49,6 +49,9 @@ class LoginMiddleware implements MiddlewareInterface
         }catch (\Throwable $e){
             return Context::get()->getResponse()->redirect('/login');
         }
+        unset($userInfo['userPwd']);
+        $request->userInfo = $userInfo;
+        \context()->setRequest($request);
         return $handler->handle($request);
     }
 }
